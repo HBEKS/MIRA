@@ -1,4 +1,3 @@
-# ui/app.py
 import streamlit as st
 import os
 import sys
@@ -7,16 +6,11 @@ from pathlib import Path
 import json
 from datetime import datetime
 
-# ==============================================================================
-# PERBAIKAN: Paksa Python untuk mengenali root folder proyek MIRA sebagai source
-# ==============================================================================
 root_path = Path(__file__).resolve().parent.parent
 if str(root_path) not in sys.path:
     sys.path.insert(0, str(root_path))
 
-# ==============================================================================
-# IMPORT DENGAN ERROR HANDLING YANG LEBIH BAIK
-# ==============================================================================
+# Import modul yang diperlukan (with try catch error handling)
 try:
     from langchain_core.messages import HumanMessage
     from pipeline.pdf_processor import (
@@ -33,9 +27,7 @@ except ImportError as e:
     st.info("Pastikan semua package sudah terinstall: `uv add langchain langchain-ollama streamlit psutil`")
     sys.exit(1)
 
-# ==============================================================================
-# KONFIGURASI HALAMAN STREAMLIT
-# ==============================================================================
+# Streamlit page configuration
 st.set_page_config(
     page_title="MIRA - Multilingual Research Assistant",
     page_icon="🤖",
@@ -43,9 +35,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ==============================================================================
-# KONFIGURASI CHAT HISTORY
-# ==============================================================================
+# Chat History Configuration
 CHAT_HISTORY_DIR = Path("./chat_history")
 CHAT_HISTORY_DIR.mkdir(exist_ok=True)
 
@@ -112,9 +102,7 @@ def delete_chat_from_disk(chat_id: str):
         print(f"❌ Gagal menghapus chat: {e}")
     return False
 
-# ==============================================================================
-# INISIALISASI SESSION STATE
-# ==============================================================================
+# Session State Initialization
 def init_session_state():
     """Inisialisasi session state dengan nilai default yang aman"""
     defaults = {
@@ -131,9 +119,7 @@ def init_session_state():
 
 init_session_state()
 
-# ==============================================================================
-# FUNGSI MANAJEMEN CHAT
-# ==============================================================================
+# Chat Management Function
 def start_new_chat():
     """Memulai chat baru - SAVE dulu chat lama"""
     if st.session_state.current_chat_id and st.session_state.messages:
@@ -231,13 +217,10 @@ if saved_chats and st.session_state.current_chat_id is None:
         if st.session_state.current_pdf_name:
             st.session_state.retriever = load_vector_store(st.session_state.current_topic)
 
-# ==============================================================================
-# SIDEBAR - INFO SISTEM & KONFIGURASI
-# ==============================================================================
+
+# System and configuration info - Sidebar
 with st.sidebar:
-    # ==========================================================================
     # CHAT MANAGEMENT
-    # ==========================================================================
     st.markdown("## 💬 Chat Management")
     
     col1, col2 = st.columns([3, 1])
@@ -279,10 +262,8 @@ with st.sidebar:
                     st.rerun()
     
     st.markdown("---")
-    
-    # ==========================================================================
-    # TOPIC SELECTION (PENTING UNTUK SKRIPSI)
-    # ==========================================================================
+
+    # Topic Selection
     st.markdown("## 🎯 Research Topic")
     
     topic_options = {
@@ -310,9 +291,7 @@ with st.sidebar:
     
     st.markdown("---")
     
-    # ==========================================================================
-    # DOCUMENT INGESTION
-    # ==========================================================================
+    # Document Ingestion (Upload PDF)
     st.markdown("## 📚 Document Ingestion")
     
     uploaded_file = st.file_uploader(
@@ -371,9 +350,7 @@ with st.sidebar:
             except Exception as e:
                 st.error(f"❌ Gagal reset: {e}")
 
-# ==============================================================================
 # MAIN CONTENT - TITLE & HEADER
-# ==============================================================================
 st.title("🤖 MIRA: Multilingual Intelligent Research Assistant")
 st.caption("Advanced Chat PDF for Academic Papers with Adaptive Translation")
 
@@ -383,9 +360,7 @@ if st.session_state.current_pdf_name:
 else:
     st.info(f"👋 **Selamat datang di MIRA!**\n\nPilih topik penelitian, lalu upload PDF jurnal ilmiah di sidebar untuk memulai riset. Database vector akan terisolasi per topik!")
 
-# ==============================================================================
 # PROSES UPLOAD PDF
-# ==============================================================================
 if uploaded_file is not None:
     if st.session_state.current_pdf_name != uploaded_file.name:
         try:
@@ -394,7 +369,7 @@ if uploaded_file is not None:
                     tmp_file.write(uploaded_file.getbuffer())
                     temp_path = tmp_file.name
                 
-                # BUAT VECTOR STORE DENGAN TOPIK SPECIFIC (folder terpisah)
+                # Make Vector Store with specific topic (Seperate folder for each topic)
                 st.session_state.retriever = create_vector_store(
                     temp_path, 
                     topic_name=st.session_state.current_topic
@@ -416,9 +391,7 @@ if uploaded_file is not None:
     else:
         st.info(f"📄 Dokumen **{uploaded_file.name}** sudah aktif. Lanjutkan bertanya.")
 
-# ==============================================================================
 # CHAT INTERFACE
-# ==============================================================================
 if st.session_state.retriever:
     # Tampilkan histori chat
     for msg in st.session_state.messages:

@@ -1,4 +1,3 @@
-# utils/system_check.py
 import psutil
 import torch
 import os
@@ -27,7 +26,7 @@ def get_system_specs():
         "gpu_name": gpu_name
     }
 
-# utils/system_check.py - Update bagian config embedding model
+# Fungsi untuk menentukan konfigurasi optimal berdasarkan spesifikasi sistem
 
 def get_optimal_config():
     """Menentukan konfigurasi optimal berdasarkan RAM"""

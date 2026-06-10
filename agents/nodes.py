@@ -1,4 +1,3 @@
-# agents/nodes.py
 from langchain_ollama import ChatOllama
 from agents.state import MIRAState
 from langdetect import detect, LangDetectException
@@ -16,10 +15,7 @@ load_dotenv()
 # Ambil konfigurasi dari .env atau default
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
 
-# ==============================================================================
-# KONFIGURASI OLLAMA LLM
-# ==============================================================================
-
+# Ollama LLM Configuration
 config = get_optimal_config()
 LLM_MODEL = config['llm_model']  
 
@@ -33,10 +29,7 @@ llm = ChatOllama(
 print(f"✅ MIRA menggunakan LLM: {LLM_MODEL}")
 
 
-# ==============================================================================
-# RETRY MECHANISM (untuk menghandle error sementara)
-# ==============================================================================
-
+# RETRY MECHANISM
 @retry(
     stop=stop_after_attempt(3),
     wait=wait_exponential(multiplier=1, min=2, max=10),
@@ -56,11 +49,7 @@ def invoke_llm_prompt_with_retry(prompt: str):
     """Invoke LLM dengan retry mechanism untuk prompt string"""
     return llm.invoke(prompt)
 
-
-# ==============================================================================
-# NODE 1: RETRIEVE NODE (DENGAN OPTIMASI RAG)
-# ==============================================================================
-
+# NODE 1: Retrieve Node with RAG Optimizer
 def retrieve_node(state: MIRAState, retriever):
     """
     Node 1: Mengambil dokumen relevan dari vector store.
@@ -74,10 +63,7 @@ def retrieve_node(state: MIRAState, retriever):
     user_query = state["messages"][-1].content
     target_lang = state.get("target_language", "en")
     
-    # ==========================================================================
-    # 🔥 TAMBAHAN: Gunakan optimasi RAG (Query Rewriting + Re-ranking)
-    # ==========================================================================
-    USE_OPTIMIZATION = True  # Set ke False jika ingin pakai naive RAG
+    USE_OPTIMIZATION = True
     
     if USE_OPTIMIZATION:
         print("="*50)
@@ -95,7 +81,7 @@ def retrieve_node(state: MIRAState, retriever):
         print(f"✅ Retrieved {len(top_chunks)} optimized chunks")
         print("="*50)
         
-        # Deteksi bahasa dari context (untuk kompatibilitas dengan translate_node)
+        # Detection language from context
         detected_lang = "en"
         if clean_context.strip():
             try:
@@ -114,11 +100,8 @@ def retrieve_node(state: MIRAState, retriever):
         }
     
     else:
-        # ======================================================================
-        # KODE LAMA (NAIVE RAG) - TETAP DI SINI
-        # ======================================================================
         
-        # 🔥 PENTING: Prefix query untuk nomic-embed-text-v2-moe
+        # If not using optimizer - Naive RAG
         query_with_prefix = f"search_query: {user_query}"
         
         print(f"🔍 Melakukan retrieval dengan query: {query_with_prefix[:100]}...")
@@ -151,9 +134,7 @@ def retrieve_node(state: MIRAState, retriever):
         }
 
 
-# ==============================================================================
-# NODE 2: ANSWER NODE (TIDAK BERUBAH)
-# ==============================================================================
+# NODE 2: ANSWER NODE
 
 def answer_node(state: MIRAState):
     """
@@ -199,10 +180,8 @@ def answer_node(state: MIRAState):
             "raw_answer": f"Maaf, terjadi kesalahan teknis saat menyusun jawaban. Silakan coba lagi. Error: {str(e)}"
         }
 
+# NODE 3: TRANSLATE NODE
 
-# ==============================================================================
-# NODE 3: TRANSLATE NODE (TIDAK BERUBAH)
-# ==============================================================================
 
 def translate_node(state: MIRAState):
     """

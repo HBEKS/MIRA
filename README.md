@@ -193,7 +193,7 @@ uv sync
 
 This command will:
 
-* 📦 Create a virtual environment (`.venv`) automatically if it does not already exist.
+* 📦 Create a virtual environment (`mira`) automatically if it does not already exist.
 * 📥 Install all project dependencies defined in `pyproject.toml` and `uv.lock`.
 * 🔒 Ensure that every developer uses the exact same package versions for reproducible environments.
 
