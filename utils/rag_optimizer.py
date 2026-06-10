@@ -1,13 +1,19 @@
-# utils/rag_optimizer.py
+import os
+
 from langchain_ollama import ChatOllama
 from sentence_transformers import CrossEncoder
 import numpy as np
+from dotenv import load_dotenv
+
+load_dotenv()
+
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
 
 # Konfigurasi LLM untuk query rewriting
 rewriter_llm = ChatOllama(
     model="llama3.2:3b",
     temperature=0.3,
-    base_url="http://127.0.0.1:11434",
+    base_url=OLLAMA_HOST,  # Ambil dari .env
 )
 
 # Load cross-encoder untuk re-ranking

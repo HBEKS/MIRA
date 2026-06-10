@@ -4,12 +4,23 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
 from utils.system_check import get_optimal_config
+from dotenv import load_dotenv
 import os
 import shutil
 from pathlib import Path
 
+# Load environment variables
+load_dotenv()
+
+# Ambil konfigurasi dari .env atau default
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
+
+
 # 🔥 LOAD OPTIMAL CONFIGURATION
 config = get_optimal_config()
+
+# 🔥 Ambil model embedding dari config
+EMBEDDING_MODEL = config['embedding_model']
 
 
 def get_persist_directory(topic_name: str) -> str:
@@ -61,8 +72,8 @@ def create_vector_store(pdf_path: str, topic_name: str = "default"):
     
     print("🔤 Membuat embeddings dengan nomic-embed-text-v2-moe...")
     embeddings = OllamaEmbeddings(
-        model="nomic-embed-text-v2-moe",
-        base_url="http://127.0.0.1:11434",
+        model=EMBEDDING_MODEL,
+        base_url=OLLAMA_HOST,
     )
     
     print(f"💾 Menyimpan ke Chroma database...")
@@ -98,8 +109,8 @@ def load_vector_store(topic_name: str = "default"):
     print(f"📁 Dari folder: {persist_directory}")
     
     embeddings = OllamaEmbeddings(
-        model="nomic-embed-text-v2-moe",
-        base_url="http://127.0.0.1:11434",
+        model=EMBEDDING_MODEL,
+        base_url=OLLAMA_HOST,
     )
     
     vector_store = Chroma(

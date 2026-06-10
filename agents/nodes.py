@@ -6,19 +6,27 @@ from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_excep
 from utils.rag_optimizer import process_query_with_optimization  # 🔥 TAMBAHAN
 import sys
 import os
+from dotenv import load_dotenv
+
+from utils.system_check import get_optimal_config
+
+# Load environment variables
+load_dotenv()
+
+# Ambil konfigurasi dari .env atau default
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
 
 # ==============================================================================
 # KONFIGURASI OLLAMA LLM
 # ==============================================================================
 
-# Pilih model LLM yang sudah di-pull
-# Rekomendasi: "llama3.2:3b" (akurat) atau "gemma2:2b" (lebih ringan)
-LLM_MODEL = "llama3.2:3b"  # Ganti sesuai model yang Anda pull
+config = get_optimal_config()
+LLM_MODEL = config['llm_model']  
 
 llm = ChatOllama(
     model=LLM_MODEL,
     temperature=0,
-    base_url="http://127.0.0.1:11434",  # 🔥 Ganti ke 127.0.0.1 lebih stabil
+    base_url=OLLAMA_HOST,  # 🔥 Ganti ke 127.0.0.1 lebih stabil
     num_predict=2048,  # Maksimal token output
 )
 
