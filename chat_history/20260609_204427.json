@@ -1,0 +1,34 @@
+{
+  "chat_id": "20260609_204427",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Apa saja metode yang dipakai?"
+    },
+    {
+      "role": "assistant",
+      "content": "Berdasarkan teks yang diberikan, beberapa metode yang digunakan dalam paper tersebut adalah:\n\n1. LASSO (Least Absolute Shrinkage and Selection Operator)\n2. Least Angle Regression (LAR)\n3. Forward Stepwise Regression (FS)\n4. Boosting\n5. Synthetic Data Techniques\n6. Independence Learning\n7. SparseNet\n8. Stabl (Stabilized Adaptive Forward Stepwise Regression)\n\nSelain itu, paper tersebut juga mencoba beberapa metode lain seperti:\n\n1. Non-convex optimization methods\n2. Iterative methods seperti ISIS (Iterative Sure Independence Screening)\n3. Generalized Linear Models (GLM) dengan menggunakan AFS sebagai algoritma adaptasi.\n\nNamun, perlu diingat bahwa paper tersebut tidak membandingkan semua metode tersebut secara komprehensif, melainkan hanya membandingkan beberapa metode yang paling relevan dengan topik penelitian."
+    },
+    {
+      "role": "user",
+      "content": "Why LAR or Least Angle Regression is used in the paper?"
+    },
+    {
+      "role": "assistant",
+      "content": "According to the provided context, Least Angle Regression (LAR) is mentioned as a closely related approach to the LASSO method. The authors of the paper highlight the connection between LAR and the LASSO solution, stating that LAR returns the exact LASSO solution when the coefficient estimates do not change signs along the coefficient path.\n\nIn particular, the authors use LAR in Section 2.3, where they aim to make a connection with Least Angle Regression. The text mentions that LAR is used as an iterative method to approximate the LASSO solution, and that it returns the exact LASSO solution when certain conditions are met.\n\nThe primary reason for using LAR in this context appears to be its ability to provide a sequential procedure for approximating the LASSO solution, which can help establish connections with other related methods."
+    },
+    {
+      "role": "user",
+      "content": "So the result on your answer already using rerank right?"
+    },
+    {
+      "role": "assistant",
+      "content": "The Adaptive Forward Stepwise Regression (AFS) algorithm is indeed a variant of the forward stepwise regression method, which typically involves a reranking process to select the next variable to enter or remove from the model.\n\nIn AFS, the selection event at each step k can be represented as a polyhedron, and the active sets are determined by the conditions given in the paper. The algorithm iteratively updates the residual and the active set, and then uses these values to determine whether to add or remove a variable from the model.\n\nThe reranking process is implicit in AFS, as the algorithm uses the selection criterion of LAR (Least Absolute Shrinkage and Selection Operator) to select the next variable to enter or remove from the model. The paper shows that the active sets must also agree by showing that the difference between the selection criterion objective for AFS and LAR is arbitrarily small at any step.\n\nSo, while AFS does not explicitly use a reranking process like traditional forward stepwise regression, it inherits the idea of iteratively updating the model and selecting variables based on a ranking criterion."
+    }
+  ],
+  "pdf_name": "25-0151.pdf",
+  "topic": "skripsi_ml",
+  "created_at": "2026-06-10T19:46:35.372165",
+  "last_updated": "2026-06-10T19:46:35.372165",
+  "message_count": 3
+}

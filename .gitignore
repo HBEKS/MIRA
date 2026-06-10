@@ -15,7 +15,7 @@ wheels/
 # =========================
 .venv/
 venv/
-env/
+.env/
 
 # =========================
 # Secrets & Configurations
@@ -38,15 +38,6 @@ env/
 # =========================
 # Karena kamu memiliki folder 'notebooks', abaikan file cache ini
 .ipynb_checkpoints/
-
-# =========================
-# Vector Database & Data (Opsional tapi penting untuk RAG)
-# =========================
-# Jika kamu menyimpan ChromaDB atau vector store secara lokal di folder tertentu
-chroma_db/
-chromadb/
-*.db
-*.sqlite3
 
 # =========================
 # OS Generated Files
