@@ -39,35 +39,7 @@ Designed as a **fully local AI assistant**, MIRA ensures user privacy by process
 
 # 🏗️ Architecture
 
-```text
-                 ┌─────────────────────┐
-                 │    PDF Document     │
-                 └──────────┬──────────┘
-                            │
-                    PDF Processing
-                            │
-                   Dynamic Chunking
-                            │
-                    Embedding Model
-                            │
-                    Chroma Vector DB
-                            │
-                     User Question
-                            │
-                     Query Rewriting
-                            │
-                     Vector Retrieval
-                            │
-                  Cross-Encoder Ranking
-                            │
-                   Context Selection
-                            │
-                  Llama 3.2 via Ollama
-                            │
-                  Translation (Optional)
-                            │
-                      Final Response
-```
+<p align="center"> <img src="assets/rag_pipeline_flowchart.svg" alt="MIRA RAG Pipeline Architecture" width="900"> </p> <p align="center"> <em> End-to-End Retrieval-Augmented Generation (RAG) pipeline with query rewriting, semantic retrieval, cross-encoder re-ranking, and grounded answer generation using a local LLM powered by Ollama. </em> </p>
 
 ---
 
