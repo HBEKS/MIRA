@@ -202,25 +202,25 @@ Once the installation is complete, activate the virtual environment:
 ### Windows (PowerShell)
 
 ```powershell
-.venv\Scripts\Activate.ps1
+mira\Scripts\Activate.ps1
 ```
 
 ### Windows (Command Prompt)
 
 ```cmd
-.venv\Scripts\activate.bat
+mira\Scripts\activate.bat
 ```
 
 ### macOS / Linux
 
 ```bash
-source .venv/bin/activate
+source mira/bin/activate
 ```
 
 After activation, your terminal prompt should look similar to:
 
 ```text
-(.venv) C:\Users\username\MIRA>
+(mira) C:\Users\username\MIRA>
 ```
 
 If the repository does not include a `uv.lock` file, install the dependencies manually:
