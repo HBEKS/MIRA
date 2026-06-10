@@ -317,7 +317,6 @@ Compare the proposed method with baseline approaches.
 
 ---
 
-````markdown
 # 📁 Project Structure
 
 ```text
@@ -359,7 +358,6 @@ MIRA/
 ├── uv.lock                        # Locked dependency versions
 └── README.md
 ```
-````
 
 ---
 
