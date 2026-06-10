@@ -24,16 +24,16 @@ Designed as a **fully local AI assistant**, MIRA ensures user privacy by process
 
 # ✨ Features
 
-* 📄 Upload and analyze academic PDF documents
-* 🔍 Advanced Retrieval-Augmented Generation (RAG)
-* 🧠 Query Rewriting for improved retrieval quality
-* 🎯 Cross-Encoder Re-ranking for context optimization
-* 🌐 Multilingual responses (English & Indonesian)
-* 💬 Persistent chat history
-* ⚡ Dynamic retrieval optimization based on available RAM
-* 🏠 Fully local deployment with Ollama
-* 🔒 Privacy-friendly architecture with offline processing
-* 📚 Grounded answer generation to minimize hallucinations
+- 📄 Upload and analyze academic PDF documents
+- 🔍 Advanced Retrieval-Augmented Generation (RAG)
+- 🧠 Query Rewriting for improved retrieval quality
+- 🎯 Cross-Encoder Re-ranking for context optimization
+- 🌐 Multilingual responses (English & Indonesian)
+- 💬 Persistent chat history
+- ⚡ Dynamic retrieval optimization based on available RAM
+- 🏠 Fully local deployment with Ollama
+- 🔒 Privacy-friendly architecture with offline processing
+- 📚 Grounded answer generation to minimize hallucinations
 
 ---
 
@@ -45,18 +45,18 @@ Designed as a **fully local AI assistant**, MIRA ensures user privacy by process
 
 # 📚 Table of Contents
 
-* Features
-* Technology Stack
-* System Requirements
-* Installation
-* Configuration
-* Usage
-* Project Structure
-* Troubleshooting
-* Performance
-* Portfolio Highlights
-* Future Improvements
-* License
+- Features
+- Technology Stack
+- System Requirements
+- Installation
+- Configuration
+- Usage
+- Project Structure
+- Troubleshooting
+- Performance
+- Portfolio Highlights
+- Future Improvements
+- License
 
 ---
 
@@ -82,33 +82,67 @@ Designed as a **fully local AI assistant**, MIRA ensures user privacy by process
 
 ## Minimum
 
-* Python 3.10–3.12
-* 8 GB RAM
-* Windows / Linux / macOS
-* 10 GB available storage
+- Python 3.10–3.12
+- 8 GB RAM
+- Windows / Linux / macOS
+- 10 GB available storage
 
 ## Recommended
 
-* 16–32 GB RAM
-* NVIDIA GPU (8 GB VRAM or above)
-* 20 GB storage
+- 16–32 GB RAM
+- NVIDIA GPU (8 GB VRAM or above)
+- 20 GB storage
 
 ---
 
 # 📦 Installation
 
-## Clone Repository
+## 1. Install Python
+
+Ensure that **Python 3.10–3.12** is installed on your system.
+
+Verify the installation:
 
 ```bash
-git clone https://github.com/yourusername/MIRA.git
-
-cd MIRA
+python --version
 ```
 
 or
 
 ```bash
-uv init MIRA
+python3 --version
+```
+
+---
+
+## 2. Install uv Package Manager
+
+MIRA uses **uv**, a fast Python package manager and replacement for `pip`.
+
+### Windows (PowerShell)
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+### macOS & Linux
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Verify the installation:
+
+```bash
+uv --version
+```
+
+---
+
+## Clone Repository
+
+```bash
+git clone https://github.com/HBEKS/MIRA.git
 
 cd MIRA
 ```
@@ -149,7 +183,47 @@ ollama pull nomic-embed-text-v2-moe
 
 ---
 
-## Install Dependencies
+## Install Project Dependencies
+
+If the repository includes a `uv.lock` file, simply run:
+
+```bash
+uv sync
+```
+
+This command will:
+
+* 📦 Create a virtual environment (`.venv`) automatically if it does not already exist.
+* 📥 Install all project dependencies defined in `pyproject.toml` and `uv.lock`.
+* 🔒 Ensure that every developer uses the exact same package versions for reproducible environments.
+
+Once the installation is complete, activate the virtual environment:
+
+### Windows (PowerShell)
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+### Windows (Command Prompt)
+
+```cmd
+.venv\Scripts\activate.bat
+```
+
+### macOS / Linux
+
+```bash
+source .venv/bin/activate
+```
+
+After activation, your terminal prompt should look similar to:
+
+```text
+(.venv) C:\Users\username\MIRA>
+```
+
+If the repository does not include a `uv.lock` file, install the dependencies manually:
 
 ```bash
 uv add langchain langchain-ollama langchain-chroma chromadb
@@ -163,16 +237,6 @@ uv add langdetect tenacity
 uv add sentence-transformers
 
 uv add psutil torch
-```
-
----
-
-## Create Required Directories
-
-```bash
-mkdir -p agents pipeline utils
-
-mkdir -p chroma_db chat_history
 ```
 
 ---
@@ -253,34 +317,49 @@ Compare the proposed method with baseline approaches.
 
 ---
 
+````markdown
 # 📁 Project Structure
 
 ```text
 MIRA/
-
-├── ui/
-│   └── app.py
-
+│
 ├── agents/
-│   ├── state.py
-│   ├── nodes.py
-│   └── graph_mira.py
-
+│   ├── graph_mira.py              # LangGraph workflow definition
+│   ├── nodes.py                   # RAG pipeline nodes
+│   └── state.py                   # Shared state management
+│
+├── assets/
+│   └── rag_pipeline_flowchart.svg # System architecture diagram
+│
+├── chat_history/                  # Automatically generated chat history
+│   └── *.json
+│
+├── chroma_db_skripsi_cv/          # Chroma vector database (Computer Vision)
+│
+├── chroma_db_skripsi_ml/          # Chroma vector database (Machine Learning)
+│
+├── config/
+│   └── settings.py                # Global application configuration
+│
 ├── pipeline/
-│   └── pdf_processor.py
-
+│   └── pdf_processor.py           # PDF parsing and vector indexing
+│
+├── ui/
+│   └── app.py                     # Streamlit application entry point
+│
 ├── utils/
-│   ├── system_check.py
-│   └── rag_optimizer.py
-
-├── chroma_db/
-
-├── chat_history/
-
-├── pyproject.toml
-
+│   ├── check_cuda.py              # CUDA availability checker
+│   ├── rag_optimizer.py           # Query rewriting & re-ranking
+│   └── system_check.py            # Hardware detection & optimization
+│
+├── .env                           # Environment variables (local)
+├── .gitignore
+├── .python-version
+├── pyproject.toml                 # Project metadata & dependencies
+├── uv.lock                        # Locked dependency versions
 └── README.md
 ```
+````
 
 ---
 
@@ -295,8 +374,6 @@ ollama list
 
 netstat -an | findstr "11434"
 ```
-
----
 
 ---
 
@@ -316,9 +393,9 @@ ollama list
 
 Possible solutions:
 
-* Switch to `gemma2:2b`
-* Reduce `chunk_size`
-* Reduce `k_retrieval`
+- Switch to `gemma2:2b`
+- Reduce `chunk_size`
+- Reduce `k_retrieval`
 
 ---
 
@@ -338,40 +415,40 @@ Possible solutions:
 
 This project demonstrates expertise in:
 
-* End-to-End Generative AI Development
-* Retrieval-Augmented Generation (RAG)
-* LangChain & LangGraph Workflow Orchestration
-* Semantic Search Systems
-* Cross-Encoder Re-ranking
-* Local LLM Deployment
-* Vector Database Integration
-* Prompt Engineering
-* AI Application Optimization
-* Streamlit Full-Stack Development
+- End-to-End Generative AI Development
+- Retrieval-Augmented Generation (RAG)
+- LangChain & LangGraph Workflow Orchestration
+- Semantic Search Systems
+- Cross-Encoder Re-ranking
+- Local LLM Deployment
+- Vector Database Integration
+- Prompt Engineering
+- AI Application Optimization
+- Streamlit Full-Stack Development
 
 Suitable for showcasing skills relevant to:
 
-* AI Engineer
-* Generative AI Engineer
-* LLM Engineer
-* Machine Learning Engineer
-* NLP Engineer
-* AI Software Engineer
+- AI Engineer
+- Generative AI Engineer
+- LLM Engineer
+- Machine Learning Engineer
+- NLP Engineer
+- AI Software Engineer
 
 ---
 
 # 🛣️ Future Improvements
 
-* Multi-document Retrieval
-* Hybrid Search (BM25 + Dense Retrieval)
-* Citation Highlighting
-* Agentic RAG Workflow
-* Knowledge Graph Integration
-* Voice-based Interaction
-* Docker Support
-* REST API
-* Cloud Deployment
-* Authentication & Multi-user Support
+- Multi-document Retrieval
+- Hybrid Search (BM25 + Dense Retrieval)
+- Citation Highlighting
+- Agentic RAG Workflow
+- Knowledge Graph Integration
+- Voice-based Interaction
+- Docker Support
+- REST API
+- Cloud Deployment
+- Authentication & Multi-user Support
 
 ---
 
@@ -385,13 +462,13 @@ See the `LICENSE` file for more details.
 
 # 🙏 Acknowledgements
 
-* LangChain
-* LangGraph
-* Ollama
-* ChromaDB
-* Streamlit
-* Sentence Transformers
-* PyTorch
+- LangChain
+- LangGraph
+- Ollama
+- ChromaDB
+- Streamlit
+- Sentence Transformers
+- PyTorch
 
 ---
 
