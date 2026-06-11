@@ -263,6 +263,7 @@ Create a `.env` file:
 
 ```env
 OLLAMA_HOST=http://127.0.0.1:11434
+HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxx
 ```
 
 ---
@@ -351,6 +352,11 @@ MIRA/
 │   ├── rag_optimizer.py           # Query rewriting & re-ranking
 │   └── system_check.py            # Hardware detection & optimization
 │
+├── journal-data/
+│   ├── 25-0151.pdf                # Machine Learning Journal
+│   ├── A survey on dynamic neural networks_ From computer vision to multi-modal sensor fusion.pdf  # Computer Vision Journal
+│   └── A CT-based deep learning model to differentiate between benign and malignant adrenal lesions.pdf    # Deep Learning Journal
+|
 ├── .env                           # Environment variables (local)
 ├── .gitignore
 ├── .python-version

@@ -9,6 +9,9 @@ load_dotenv()
 
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
 
+# 🔥 TAMBAHAN: Ambil HF_TOKEN dari environment
+HF_TOKEN = os.getenv("HF_TOKEN", None)
+
 # Konfigurasi LLM untuk query rewriting
 rewriter_llm = ChatOllama(
     model="llama3.2:3b",
@@ -16,10 +19,17 @@ rewriter_llm = ChatOllama(
     base_url=OLLAMA_HOST,  # Ambil dari .env
 )
 
-# Load cross-encoder untuk re-ranking
+# 🔥 TAMBAHAN: Load cross-encoder dengan HF_TOKEN (jika ada)
 try:
-    reranker = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
-    print("✅ Cross-encoder loaded for re-ranking")
+    if HF_TOKEN:
+        reranker = CrossEncoder(
+            'cross-encoder/ms-marco-MiniLM-L-6-v2',
+            token=HF_TOKEN  # 🔥 Tambahkan token untuk autentikasi
+        )
+        print("✅ Cross-encoder loaded for re-ranking (with authentication)")
+    else:
+        reranker = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
+        print("✅ Cross-encoder loaded for re-ranking (unauthenticated)")
 except Exception as e:
     print(f"⚠️ Gagal load cross-encoder: {e}")
     reranker = None
